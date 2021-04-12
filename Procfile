@@ -1,1 +1,1 @@
-web: gunicorn app:dockerize
+web: gunicorn app:app
