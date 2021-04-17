@@ -1,7 +1,12 @@
-from flask import Flask, render_template, request
+import logging
+import sys
+
 import docker
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
+app.logger.addHandler(logging.StreamHandler(sys.stdout))
+app.logger.setLevel(logging.ERROR)
 
 
 @app.route('/')
