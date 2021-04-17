@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html">
+<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="{{ url_for('static', filename= 'css/style.css') }}">
@@ -10,16 +10,23 @@
    <h1>DockerizeIt</h1>
    <h4 style="text-align: center">a simple tool to generate a docker file</h4>
 
-    <form action="/generate/" method="post">
+    <form action="/get_images/" method="post">
         Source Image:<input name="source" type="text"></input>
-    <button name="generateBtn" type="submit">Generate file</button>
+    <button name="get_images" type="submit">Get Images</button></br>
+        </form>
+
+    <form action="/generate/" method="post">
+        Chosen source Image:<input name="chosen" type="text"></input>
+    <button name="generate" type="submit">Generate file</button>
 </form>
+
 
 </br></br>
 
 
-Generated docker image:</br>
-{{ generate }}
+
+{{ getImages }}
+{{ generatedMessage }}
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
 </body>
