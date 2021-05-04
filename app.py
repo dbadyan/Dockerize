@@ -10,5 +10,10 @@ def index():
 
 @app.route("/generate/", methods=['POST'])
 def generate():
-    req = request.form['chosen']
+    if request.method == 'POST':
+        try:
+            print(" json:   " + request.json['image'])
+        except Exception as e:
+            print(e)
+    req = request.json['image']
     return render_template('index.html', generatedMessage="FROM " + req)

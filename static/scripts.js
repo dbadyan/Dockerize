@@ -27,6 +27,31 @@
   },
   //templateResult: formatState
 });
+});
+
+$(document).ready(function() {
+			$("#generate").click(function(e) {
+			console.log("hi");
+			var data = {
+			    image: $("#chosen").val()
+			}
+			console.log("***data:  " + JSON.stringify(data));
+					e.preventDefault();
+					$.ajax({
+						type: 'POST',
+						dataType: 'json',
+						url: '/generate/',
+						contentType : 'application/json',
+						data: JSON.stringify(data),
+						done: function(){
+						        alert("success");
+						        console.log("success");
+						}
+					})
+				})
+
+			});
+
 function formatState (data){
 console.log("state:" + JSON.stringify(data))
  if (data.loading) {
@@ -35,7 +60,7 @@ console.log("state:" + JSON.stringify(data))
   var $container = $("<div class='select2-result-repository__avatar'><img src='" + data.summaries.logo_url.large + "' /></div>")
   return $container;
 }
-});
+//$.ajax( "generate.html" ).then(revealBorder());
     function revealBorder(){
         var dockerBorderStatus = document.getElementById("dockerFileBorder");
         console.log(dockerBorderStatus);
