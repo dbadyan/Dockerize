@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request
 
 app = Flask(__name__)
+global response
 
 
 @app.route('/')
@@ -12,10 +13,28 @@ def index():
 def generate():
     if request.method == 'POST':
         try:
-            print(" json:   " + request.json['image'])
+            global response
+            response = {
+                'dockerFile': "FROM " + request.json['image'] + '</br>'
+                              + request.json['aptGet'] + '</br>'
+                              + request.json['instalNginx'] + '</br>'
+                              + request.json['expose'] + '</br>'
+                              + request.json['start']
+                # 'aptGet': request.json['aptGet'],
+                # 'instalNginx': request.json['instalNginx'],
+                # 'expose': request.json['expose'],
+                # 'start': request.json['start']
+            }
+            return response
         except Exception as e:
             print(e)
-        response = {
-            'dockerFile': request.json['image']
-        }
-        return response
+
+
+@app.route("/save/", methods=['POST'])
+def save():
+    if request.method == 'POST':
+        try:
+            print("hooray: " + response['dockerFile'])
+            return response
+        except Exception as e:
+            print(e)

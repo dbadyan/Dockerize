@@ -31,16 +31,19 @@ $(document).ready(function() {
             }
         },
         placeholder: 'Search for a repository',
-        minimumInputLength: 2,
+        //minimumInputLength: 2,
         templateResult: formatState
     });
 });
 
 $(document).ready(function() {
     $("#generate").click(function(e) {
-        console.log("hi");
         var data = {
-            image: $("#chosen").val()
+            image: $("#chosen").val(),
+            aptGet: $("#aptGet").val(),
+            instalNginx: $("#instalNginx").val(),
+            expose: $("#expose").val(),
+            start: $("#start").val()
         }
         $.ajax({
             type: 'POST',
@@ -49,12 +52,28 @@ $(document).ready(function() {
             contentType: 'application/json',
             data: JSON.stringify(data)
         }).done(function(data) {
-                revealBorder(data);
-                console.log(data['dockerFile']);
-
+                generateFile(data);
         })
     });
 });
+
+$(document).ready(function() {
+    $("#download-button").click(function(e) {
+    $.ajax({
+            type: 'POST',
+            dataType: 'json',
+            url: '/save/',
+            contentType: 'application/json',
+            //data: JSON.stringify(data)
+        }).done(function(resp) {
+                console.log('done');
+                console.log(resp['dockerFile']);
+                resp = resp['dockerFile'].replaceAll('</br>', '\r\n')
+                download(resp,'dockerfile','')
+
+        })
+    })
+})
 
 function formatState(data) {
     console.log("state:" + JSON.stringify(data))
@@ -67,8 +86,31 @@ function formatState(data) {
     return $container;
 }
 
-function revealBorder(data) {
+function generateFile(data) {
     var dockerBorder = document.getElementById("dockerFileBorder");
         dockerBorder.style.visibility = "visible";
-        document.getElementById("dockerFileContent").innerHTML = "FROM " +  data['dockerFile'];
+        for (const [key, value] of Object.entries(data)) {
+            console.log(key, value);
+            document.getElementById("dockerFileContent").innerHTML += "</br>" + value
+            }
+//        sendAdditionalCommands();
+
+}
+
+function download(data, filename, type) {
+    var file = new Blob([data], {type: type});
+    if (window.navigator.msSaveOrOpenBlob) // IE10+
+        window.navigator.msSaveOrOpenBlob(file, filename);
+    else { // Others
+        var a = document.createElement("a"),
+                url = URL.createObjectURL(file);
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(function() {
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }, 0);
+    }
 }
