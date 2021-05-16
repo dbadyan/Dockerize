@@ -61,10 +61,7 @@ $(document).ready(function() {
     $("#download-button").click(function(e) {
     $.ajax({
             type: 'POST',
-            dataType: 'json',
-            url: '/save/',
-            contentType: 'application/json',
-            //data: JSON.stringify(data)
+            url: '/save/'
         }).done(function(resp) {
                 console.log('done');
                 console.log(resp['dockerFile']);
