@@ -12,10 +12,10 @@
 <body>
 
    {% block content %}
-    <h1>DockerizeIt</h1>
+    <img src="{{url_for('static', filename='Logo.jpg') }}" id="logo" style="    "/>
 
 
-   <h4 style="text-align: center">a simple tool to generate a docker file</h4>
+   <h4 style="text-align: center">a simple educational tool to generate a docker file</h4>
 <div id="inputs">
    <div> Choose source Image:
        <select class="js-data-example-ajax" id="chosen" name="chosen" style="width: 25%"></select>
@@ -23,49 +23,60 @@
 
    <div> Update the image to the latest packages:
        <input type="checkbox" id="enableAptGet" onchange="document.getElementById('aptGet').disabled = !this.checked;">
-       <input type="text" id="aptGet" value="RUN apt-get update && apt-get upgrade -y"  disabled style="width: 25%"></input>
+       <input type="text" id="aptGet" value="RUN apt-get update && apt-get upgrade -y"  disabled style="width: 25%" />
    </div>
    <div> Install NGINX to test:
        <input type="checkbox" id="enableInstalNginx" onchange="document.getElementById('instalNginx').disabled = !this.checked;">
-       <input type="text" id="instalNginx" value="RUN apt-get install nginx -y"  disabled style="width: 25%"></input>
+       <input type="text" id="instalNginx" value="RUN apt-get install nginx -y"  disabled style="width: 25%" />
    </div>
 
    <div> Expose port 80:
-       <input type="checkbox" id="enableExpose" onchange="document.getElementById('expose').disabled = !this.checked;">
-       <input type="text" id="expose" value="EXPOSE 80"  disabled style="width: 25%"></input>
+       <input type="checkbox" id="enableExpose" onchange="document.getElementById('expose').disabled = !this.checked;" />
+       <input type="text" id="expose" value="EXPOSE 80"  disabled style="width: 25%" />
    </div>
 
    <div> start up NGINX:
-       <input type="checkbox" id="enableStart" onchange="document.getElementById('start').disabled = !this.checked;">
-       <input type="text" id="start" value="CMD [&quot;nginx&quot;, &quot;-g&quot;, &quot;daemon off;&quot;]"  disabled style="width: 25%"></input>
+       <input type="checkbox" id="enableStart" onchange="document.getElementById('start').disabled = !this.checked;" />
+       <input type="text" id="start" value="CMD [&quot;nginx&quot;, &quot;-g&quot;, &quot;daemon off;&quot;]"  disabled style="width: 25%" />
    </div>
 </div>
     <div class="text-center">
-        <button name="generate" id="generate" class="btn btn-primary" style="margin: 0 auto">Generate file</button>
+        <button name="generate" id="generate" class="btn btn-primary" style="margin: 0 auto" disabled>Generate file</button>
     </div>
 
 
-</br></br>
+<br />
    <div id="result"></div>
-<div id="dockerFileBorder" name="dockerFileBorder" style="border: solid; visibility: hidden">
+<div id="dockerFileBorder">
 
-<div id="dockerFileContent"></div>
+<pre id="dockerFileContent"></pre>
 <div class="text-center">
-    <button class="button" id="copy-button" data-clipboard-target="#dockerFileContent" style="margin: 0 auto">Copy</button>
-    <button class="button" id="download-button" data-clipboard-target="#dockerFileContent" style="margin: 0 auto">Save As</button>
+    <button class="btn btn-info" id="copy-button" data-clipboard-target="#dockerFileContent" style="margin: 0 auto">Copy</button>
+    <button class="btn btn-info" id="download-button" data-clipboard-target="#dockerFileContent" style="margin: 0 auto">Save As</button>
 </div>
 </div>
-<iframe id="docker_iframe" style="display:none;"></iframe>
+   <div id="instructions" style="visibility: hidden">To be able to run the generated docker file, simply follow these steps:
+       <ul>
+           <li>download and install <a href="https://www.docker.com/products/docker-desktop" target="_blank">docker desktop</a></li>
+           <li>download the dockerfile you generated </li>
+           <li>make sure the file doesn't have the .txt extension </li>
+           <li>open the console and navigate to the directory where you placed the dockerfile </li>
+           <li>run the command 'docker build -t getting-started .'</li>
+           <li>to start it, run 'docker run -dp 80:80 getting-started'</li>
+           <li>you should now be able to open http://localhost:80 and see the app running(if you used the default values provided up here)</li>
+       </ul>
+   </div>
+
+   <div id="footer">Useful links: <a href="https://docs.docker.com/" target="_blank">Docker docs</a> |
+       <a href="https://github.com/dbadyan/Dockerize/tree/master" target="_blank">GitHub</a> |
+   <a href="https://docs.docker.com/compose/" target="_blank">Docker Compose</a>
+   </div>
 
 <script crossorigin="anonymous" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="{{url_for('static', filename='jquery.js') }}" type=text/javascript></script>
 <script src="{{url_for('static', filename='scripts.js') }}" type=text/javascript></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
-   <script>
-      var btn = document.getElementById('copy-button');
-      var clipboard = new ClipboardJS(btn);
-   </script>
 {% endblock %}
 </body>
 </html>

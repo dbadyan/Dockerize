@@ -1,9 +1,38 @@
-h1 {
-    border: 2px #eee solid;
-    color: brown;
-    text-align: center;
-    padding: 10px;
+html, body {
+    height: 100%;
 }
 .text-center {
   text-align: center;
 }
+
+#logo {
+    margin: 0 auto 25px auto;
+    display: block;
+}
+
+#content {
+    position: relative;
+    padding: 25px;
+    min-height: 100%;
+}
+
+#inputs > div {
+    margin-bottom: 7px;
+}
+#dockerFileBorder {
+    border: solid;
+    visibility: hidden;
+    padding: 5px;
+}
+#inputs {
+    margin-top: 50px;
+}
+
+#instructions {
+    margin-top: 25px;
+}
+
+#footer {
+    position: absolute;
+    bottom: 0;
+    }

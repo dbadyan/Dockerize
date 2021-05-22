@@ -31,19 +31,26 @@ $(document).ready(function() {
             }
         },
         placeholder: 'Search for a repository',
-        //minimumInputLength: 2,
+        minimumInputLength: 2,
         templateResult: formatState
     });
 });
 
 $(document).ready(function() {
     $("#generate").click(function(e) {
-        var data = {
-            image: $("#chosen").val(),
-            aptGet: $("#aptGet").val(),
-            instalNginx: $("#instalNginx").val(),
-            expose: $("#expose").val(),
-            start: $("#start").val()
+        var data = {};
+        data['image'] = $("#chosen").val()
+        if (!document.getElementById('aptGet').disabled){
+            data['aptGet'] = $("#aptGet").val();
+        }
+         if (!document.getElementById('instalNginx').disabled){
+            data['instalNginx'] = $("#instalNginx").val();
+        }
+         if (!document.getElementById('expose').disabled){
+            data['expose'] = $("#expose").val();
+        }
+         if (!document.getElementById('start').disabled){
+            data['start'] = $("#start").val();
         }
         $.ajax({
             type: 'POST',
@@ -59,16 +66,7 @@ $(document).ready(function() {
 
 $(document).ready(function() {
     $("#download-button").click(function(e) {
-    $.ajax({
-            type: 'POST',
-            url: '/save/'
-        }).done(function(resp) {
-                console.log('done');
-                console.log(resp['dockerFile']);
-                resp = resp['dockerFile'].replaceAll('</br>', '\r\n')
-                download(resp,'dockerfile','')
-
-        })
+        download(document.getElementById("dockerFileContent").innerText,'Dockerfile','')
     })
 })
 
@@ -85,13 +83,10 @@ function formatState(data) {
 
 function generateFile(data) {
     var dockerBorder = document.getElementById("dockerFileBorder");
-        dockerBorder.style.visibility = "visible";
-        for (const [key, value] of Object.entries(data)) {
-            console.log(key, value);
-            document.getElementById("dockerFileContent").innerHTML += "</br>" + value
-            }
-//        sendAdditionalCommands();
-
+    dockerBorder.style.visibility = "visible";
+    var instructionsElement = document.getElementById("instructions");
+    instructionsElement.style.visibility = "visible";
+    document.getElementById("dockerFileContent").innerHTML = data['dockerFile'];
 }
 
 function download(data, filename, type) {
@@ -111,3 +106,10 @@ function download(data, filename, type) {
         }, 0);
     }
 }
+$(document).ready(function() {
+    var btn = document.getElementById('copy-button');
+    var clipboard = new ClipboardJS(btn);
+});
+$('#chosen').on("select2:selecting", function(e) {
+   document.getElementById('generate').disabled = false;
+});
